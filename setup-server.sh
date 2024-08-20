@@ -1,5 +1,4 @@
 #!/bin/bash
-echo "Ce script va configurer un nouveau serveur Ubuntu."
 
 if [ "$(id -u)" -ne 0 ]; then
   echo "Ce script doit être exécuté avec des privilèges root. Utilisez sudo."
