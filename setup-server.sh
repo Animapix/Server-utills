@@ -1,33 +1,46 @@
 #!/bin/bash
 
+# Couleurs pour les impressions stylisées
+GREEN="\e[32m"
+YELLOW="\e[33m"
+RED="\e[31m"
+CYAN="\e[36m"
+BOLD="\e[1m"
+RESET="\e[0m"
+
+# Vérification des privilèges root
 if [ "$(id -u)" -ne 0 ]; then
-  echo "This script must be run as root. Please use sudo."
+  echo -e "${RED}${BOLD}This script must be run as root. Please use sudo.${RESET}"
   exit 1
 fi
 
 #_______________________________________________NEW USER__________________________________________________________
 
-read -p "Do you want to create a new user? (yes/no) : " REPLY
+echo -e "${CYAN}${BOLD}--- User Management ---${RESET}"
+
+read -p "$(echo -e ${YELLOW}Do you want to create a new user? (yes/no): ${RESET})" REPLY
 
 if [[ "$REPLY" =~ ^[Yy][Ee][Ss]$ ]]; then
-    read -p "Enter the name of the new user: " NEW_USER
+    read -p "$(echo -e ${YELLOW}Enter the name of the new user: ${RESET})" NEW_USER
     adduser $NEW_USER
     usermod -aG sudo $NEW_USER
     mkdir -p /home/$NEW_USER/.ssh
     chmod 700 /home/$NEW_USER/.ssh
     systemctl restart ssh
-    echo "The new user $NEW_USER has been successfully created and added to the sudo group."
+    echo -e "${GREEN}${BOLD}The new user $NEW_USER has been successfully created and added to the sudo group.${RESET}"
 fi
 
 #_______________________________________________DISABLE USER______________________________________________________
 
+echo -e "${CYAN}${BOLD}--- Disable User ---${RESET}"
+
 while true; do
-  read -p "Do you want to disable a user? (yes/no) : " REPLY
+  read -p "$(echo -e ${YELLOW}Do you want to disable a user? (yes/no): ${RESET})" REPLY
   if [[ "$REPLY" =~ ^[Yy][Ee][Ss]$ ]]; then
-    read -p "Enter the name of the user to disable: " USER_TO_DISABLE
+    read -p "$(echo -e ${YELLOW}Enter the name of the user to disable: ${RESET})" USER_TO_DISABLE
     usermod -L $USER_TO_DISABLE
     echo "DenyUsers $USER_TO_DISABLE" >> /etc/ssh/sshd_config
-    echo "The user $USER_TO_DISABLE has been locked and their SSH access disabled."
+    echo -e "${GREEN}${BOLD}The user $USER_TO_DISABLE has been locked and their SSH access disabled.${RESET}"
   else
     break
   fi
@@ -35,21 +48,39 @@ done
 
 #_______________________________________________CHANGE SERVER NAME_______________________________________________
 
-read -p "Do you want to change the server name? (yes/no) : " REPLY
+echo -e "${CYAN}${BOLD}--- Change Server Name ---${RESET}"
+
+read -p "$(echo -e ${YELLOW}Do you want to change the server name? (yes/no): ${RESET})" REPLY
 
 if [[ "$REPLY" =~ ^[Yy][Ee][Ss]$ ]]; then
-    read -p "Enter the new server name: " NEW_HOSTNAME
+    read -p "$(echo -e ${YELLOW}Enter the new server name: ${RESET})" NEW_HOSTNAME
     sudo hostnamectl set-hostname $NEW_HOSTNAME
     echo $NEW_HOSTNAME | sudo tee /etc/hostname > /dev/null
     sudo sed -i "s/127.0.1.1\s\+.*/127.0.1.1    $NEW_HOSTNAME/" /etc/hosts
-    echo "The hostname has been changed to $NEW_HOSTNAME."
+    echo -e "${GREEN}${BOLD}The hostname has been changed to $NEW_HOSTNAME.${RESET}"
+fi
+
+#_______________________________________________UPDATE & UPGRADE SERVER__________________________________________
+
+echo -e "${CYAN}${BOLD}--- Update & Upgrade Server ---${RESET}"
+
+read -p "$(echo -e ${YELLOW}Do you want to update and upgrade the server? (yes/no): ${RESET})" REPLY
+
+if [[ "$REPLY" =~ ^[Yy][Ee][Ss]$ ]]; then
+    echo -e "${CYAN}${BOLD}Updating package lists...${RESET}"
+    sudo apt-get update
+    echo -e "${CYAN}${BOLD}Upgrading installed packages...${RESET}"
+    sudo apt-get upgrade -y
+    echo -e "${GREEN}${BOLD}The server has been updated and upgraded successfully.${RESET}"
 fi
 
 #_______________________________________________REBOOT SERVER_____________________________________________________
 
-read -p "Do you want to reboot the server? (yes/no) : " REPLY
+echo -e "${CYAN}${BOLD}--- Reboot Server ---${RESET}"
+
+read -p "$(echo -e ${YELLOW}Do you want to reboot the server? (yes/no): ${RESET})" REPLY
 
 if [[ "$REPLY" =~ ^[Yy][Ee][Ss]$ ]]; then
-    echo "The server will now reboot."
+    echo -e "${RED}${BOLD}The server will now reboot.${RESET}"
     sudo reboot
 fi
