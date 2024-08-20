@@ -22,7 +22,7 @@ jobs:
 
       - name: Create control file
         run: |
-            VERSION=${{ github.ref_name#v }}
+            VERSION=$(echo "${{ github.ref_name }}" | sed 's/^v//')
             echo "Package: setup-server" > setup-server/DEBIAN/control
             echo "Version: $VERSION" >> setup-server/DEBIAN/control
             echo "Section: base" >> setup-server/DEBIAN/control
