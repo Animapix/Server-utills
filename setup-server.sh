@@ -17,7 +17,7 @@ if [[ "$REPLY" =~ ^[Oo][Uu][Ii]$ ]]; then
     chmod 700 /home/$NEW_USER/.ssh
     systemctl restart ssh
     echo "Le nouvel utilisateur $NEW_USER a été créé avec succès et ajouté au groupe sudo."
-else
+fi
 
 #_______________________________________________DISABLE USER______________________________________________________
 
@@ -43,12 +43,13 @@ if [[ "$REPLY" =~ ^[Oo][Uu][Ii]$ ]]; then
     echo $NEW_HOSTNAME | sudo tee /etc/hostname
     sudo sed -i "s/127.0.1.1.*/127.0.1.1    $NEW_HOSTNAME/" /etc/hosts
     echo "Le nom d'hôte a été changé en $NEW_HOSTNAME."
-else
+fi
+
 #_______________________________________________REBOOT SERVER_____________________________________________________
 
-read -p "Voulez-vous redémarer le serveur ? (oui/non) : " REPLY
+read -p "Voulez-vous redémarrer le serveur ? (oui/non) : " REPLY
 
 if [[ "$REPLY" =~ ^[Oo][Uu][Ii]$ ]]; then
     echo "Le serveur va maintenant redémarrer."
     sudo reboot
-else
+fi
