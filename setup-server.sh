@@ -29,6 +29,16 @@ if [[ "$REPLY" =~ ^[Yy][Ee][Ss]$ ]]; then
     mkdir -p /home/$NEW_USER/.ssh
     chmod 700 /home/$NEW_USER/.ssh
     systemctl restart ssh
+
+    echo -e "${YELLOW}Do you want to create .shh folder ? (yes/no): ${RESET}"
+    read REPLY
+    if [[ "$REPLY" =~ ^[Yy][Ee][Ss]$ ]]; then
+        echo -e "${YELLOW}Creating .ssh folder...${RESET}"
+        mkdir -p /home/$NEW_USER/.ssh
+        chown -R $NEW_USER:$NEW_USER /home/$NEW_USER/.ssh
+        chmod 700 /home/$NEW_USER/.ssh
+        echo -e "${GREEN}${BOLD}The .ssh folder has been created successfully.${RESET}"
+    fi
     echo -e "${GREEN}${BOLD}The new user $NEW_USER has been successfully created and added to the sudo group.${RESET}"
 fi
 
