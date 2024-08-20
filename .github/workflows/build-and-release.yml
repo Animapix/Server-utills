@@ -1,0 +1,42 @@
+name: Build and Release .deb Package
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up the package directory
+        run: |
+          mkdir -p setup-server/DEBIAN
+          mkdir -p setup-server/usr/local/bin
+          cp setup-server.sh setup-server/usr/local/bin/setup-server
+          chmod +x setup-server/usr/local/bin/setup-server
+
+      - name: Create control file
+        run: |
+          echo "Package: setup-server" > setup-server/DEBIAN/control
+          echo "Version: ${{ github.ref_name }}" >> setup-server/DEBIAN/control
+          echo "Section: base" >> setup-server/DEBIAN/control
+          echo "Priority: optional" >> setup-server/DEBIAN/control
+          echo "Architecture: all" >> setup-server/DEBIAN/control
+          echo "Depends: bash" >> setup-server/DEBIAN/control
+          echo "Maintainer: Nicolas POINTET <nicolas@animapix.fr>" >> setup-server/DEBIAN/control
+          echo "Description: Ce paquet installe un script Bash pour gérer les utilisateurs et autres tâches administratives." >> setup-server/DEBIAN/control
+
+      - name: Build the .deb package
+        run: dpkg-deb --build setup-server
+
+      - name: Upload .deb as a GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: setup-server.deb
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
