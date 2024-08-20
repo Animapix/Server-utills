@@ -40,8 +40,8 @@ read -p "Voulez-vous changer le nom de votre serveur ? (oui/non) : " REPLY
 if [[ "$REPLY" =~ ^[Oo][Uu][Ii]$ ]]; then
     read -p "Entrez le nom du serveur: " NEW_HOSTNAME
     sudo hostnamectl set-hostname $NEW_HOSTNAME
-    echo $NEW_HOSTNAME | sudo tee /etc/hostname
-    sudo sed -i "s/127.0.1.1.*/127.0.1.1    $NEW_HOSTNAME/" /etc/hosts
+    echo $NEW_HOSTNAME | sudo tee /etc/hostname > /dev/null
+    sudo sed -i "s/127.0.1.1\s\+.*/127.0.1.1    $NEW_HOSTNAME/" /etc/hosts
     echo "Le nom d'hôte a été changé en $NEW_HOSTNAME."
 fi
 
