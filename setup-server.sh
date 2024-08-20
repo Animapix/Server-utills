@@ -1,4 +1,3 @@
-  GNU nano 7.2                                         init_server.sh
 #!/bin/bash
 
 if [ "$(id -u)" -ne 0 ]; then
