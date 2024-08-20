@@ -38,6 +38,17 @@ if [[ "$REPLY" =~ ^[Yy][Ee][Ss]$ ]]; then
         chown -R $NEW_USER:$NEW_USER /home/$NEW_USER/.ssh
         chmod 700 /home/$NEW_USER/.ssh
         echo -e "${GREEN}${BOLD}The .ssh folder has been created successfully.${RESET}"
+
+        echo -e "${YELLOW}Do you want to add a public key to the .ssh folder? (yes/no): ${RESET}"
+        read REPLY
+        if [[ "$REPLY" =~ ^[Yy][Ee][Ss]$ ]]; then
+            echo -e "${YELLOW}Enter the public key: ${RESET}"
+            read PUBLIC_KEY
+            echo $PUBLIC_KEY > /home/$NEW_USER/.ssh/authorized_keys
+            chown $NEW_USER:$NEW_USER /home/$NEW_USER/.ssh/authorized_keys
+            chmod 600 /home/$NEW_USER/.ssh/authorized_keys
+            echo -e "${GREEN}${BOLD}The public key has been added to the .ssh folder.${RESET}"
+        fi
     fi
     echo -e "${GREEN}${BOLD}The new user $NEW_USER has been successfully created and added to the sudo group.${RESET}"
 fi
