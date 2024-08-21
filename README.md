@@ -59,6 +59,3 @@ Contributions are welcome! If you would like to contribute:
 4. Push the branch (git push origin my-new-feature).
 5. Submit a pull request.
 Please ensure your contributions follow the project's guidelines.
-
-## Licence
-This project is licensed under the MIT License. See the LICENSE file for more details.
