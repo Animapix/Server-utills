@@ -12,7 +12,7 @@ This script allows you to create users, change the server name, update the syste
 ### 1. Download the latest version
 To download the latest version of the `.deb` package, use the following command. This command will download the package and save it as `setup-server.deb`:
 ```bash
-wget -O setup-server.deb https://github.com/Animapix/Server-utills/releases/download/v1.1.0/setup-server.deb
+wget -O setup-server.deb https://github.com/Animapix/Server-utills/releases/download/v1.1.1/setup-server.deb
 ```
 
 
@@ -30,7 +30,7 @@ rm setup-server.deb
 > [!TIP]
 > You can do all of this in a single command:
 > ```bash
-> wget -O setup-server.deb https://github.com/Animapix/Server-utills/releases/download/v1.1.0/setup-server.deb && sudo dpkg -i setup-server.deb && rm setup-server.deb
+> wget -O setup-server.deb https://github.com/Animapix/Server-utills/releases/download/v1.1.1/setup-server.deb && sudo dpkg -i setup-server.deb && rm setup-server.deb
 > ```
 
 ## Usage
@@ -39,10 +39,10 @@ Once the package is installed, run the script using the following command:
 sudo setup-server
 ```
 The script will ask you a series of questions to configure and manage your server. It allows you to:
+- Update and upgrade the system.
+- Change the server name.
 - Create new users.
 - Disable existing users.
-- Change the server name.
-- Update and upgrade the system.
 - Reboot the server.
 
 ## Uninstallation
